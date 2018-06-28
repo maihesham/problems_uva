@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+#define clr(v, d)		memset(v, d, sizeof(v))
+using namespace std;
+int dx[4] = { 0, 0, 1, -1 };
+int dy[4] = { 1, -1, 0, 0 };
+int X[8]= {-1,-1,-1,0,0,1,1,1};
+int Y[8]= {-1,0,1,-1,1,-1,0,1};
+const int MAXX=10000+9;
+typedef long long         ll;
+const ll OO = 1e8;
+const int o_o=0;
+int n,m;
+int grid[10+9][100+9];
+int dp[20+9][100+9];
+vector<int>ans;
+int minn=INT_MAX;
+bool isvalid(int i,int j){
+    if(i>=0&&j>=0&&i<n&&j<m){return 1;}else{return 0;}
+}
+void solve(int i,int j,vector<int>pa , int countt){
+    if(j==m-1){
+        if(countt<minn){
+            minn=countt;
+            ans=pa;
+        }
+        return ;
+    }
+    if(i==0){
+      if(isvalid(n-1,j+1)){
+         pa.push_back(n-1);
+         solve(n-1,j+1,pa,countt+grid[n-1][j+1]);
+         pa.pop_back();
+     }
+    }
+    if(isvalid(i,j+1)){
+        pa.push_back(i);
+        solve(i,j+1,pa,countt+grid[i][j+1]);
+        pa.pop_back();
+    }
+     if(isvalid(i+1,j+1)){
+         pa.push_back(i+1);
+         solve(i+1,j+1,pa,countt+grid[i+1][j+1]);
+         pa.pop_back();
+    }
+    if(isvalid(i-1,j+1)){
+         pa.push_back(i-1);
+         solve(i-1,j+1,pa,countt+grid[i-1][j+1]);
+         pa.pop_back();
+    }
+
+
+
+    return ;
+}
+void reinzallition();
+int main()
+{
+     while(scanf("%d %d",&n,&m) != EOF){
+        reinzallition();   
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                cin>>grid[i][j];
+            }
+        }
+        vector<int>y;
+        for(int i=0;i<n;i++){
+            y.push_back(i);
+            solve(i,0,y,grid[i][0]);
+            y.pop_back();
+        }
+        for(int i=0;i<ans.size();i++){
+            cout<<ans[i]<<" ";
+        }
+        cout<<endl;
+        cout<<minn<<endl;
+        ans.clear();
+        minn=INT_MAX;
+     }
+   return 0;
+}
+
+void reinzallition(){
+    for(int i=0;i<20+9;i++){
+        for(int j=0;j<100+9;j++){
+            dp[i][j]=-1;
+        }
+    }
+}

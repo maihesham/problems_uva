@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+#define clr(v, d)		memset(v, d, sizeof(v))
+using namespace std;
+int dx[4] = { 0, 0, 1, -1 };
+int dy[4] = { 1, -1, 0, 0 };
+int X[8]= {-1,-1,-1,0,0,1,1,1};
+int Y[8]= {-1,0,1,-1,1,-1,0,1};
+const int MAXX=10000+9;
+typedef long long         ll;
+const ll OO = 1e8;
+const int o_o=0;
+int R,C;
+ll countPaths=0;
+bool unsafe[100+9][100+9];
+void declare(){
+    for(int i=0;i<100+9;i++){
+        for(int j=0;j<100+9;j++){
+            unsafe[i][j]=false;
+        }
+    }
+}
+bool isvalid(int i,int j){
+    if(i>=1&&j>=1&&i<=R&&j<=C&&!unsafe[i][j]){
+        return 1;
+    }else{return 0;}
+}
+void solve(int i,int j){
+    if(i==R&&j==C){
+        countPaths++;
+        return ;
+    }
+    if(isvalid(i,j+1)){
+        solve(i,j+1);
+    }
+    if(isvalid(i+1,j)){
+        solve(i+1,j);
+    }
+    return ;
+
+}
+int main () {
+  int T;
+  cin>>T;
+  while(T--){
+    declare();
+    cin>>R>>C;
+    cin.ignore();
+    for (int i = 1, j; i <= R; ++i) {
+            string str;
+            getline(cin, str);
+            stringstream ss(str);
+            ss >> j;    // ignore the first number
+            while (ss >> j)
+                unsafe[i][j] = true;
+        }
+        solve(1,1);
+        cout<<countPaths<<endl;
+        if(T){
+            cout<<endl;
+        }
+        countPaths=0;
+
+  }
+  return 0;
+}
+
+
+
+
